@@ -141,12 +141,17 @@ export default function App() {
     }));
   }, [t]);
 
-  // Load lang & form from localStorage
+  // Load lang & form from localStorage (URL ?lang= takes priority, e.g. link from rachiddevworks.com)
   useEffect(() => {
     try {
-      const savedLang = localStorage.getItem(LANG_KEY) as Lang | null;
-      if (savedLang === "ar" || savedLang === "fr") {
-        setLang(savedLang);
+      const urlLang = new URLSearchParams(window.location.search).get("lang");
+      if (urlLang === "ar" || urlLang === "fr") {
+        setLang(urlLang);
+      } else {
+        const savedLang = localStorage.getItem(LANG_KEY) as Lang | null;
+        if (savedLang === "ar" || savedLang === "fr") {
+          setLang(savedLang);
+        }
       }
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
